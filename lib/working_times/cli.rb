@@ -6,7 +6,8 @@ require 'active_support/time'
 module WorkingTimes
   class CLI < Thor
     desc 'start [COMMENT]', 'Start working with comment'
-    def start(comment: nil)
+    def start(comment = nil)
+      puts comment if comment
       puts 'Start!!'
     end
 
@@ -14,7 +15,8 @@ module WorkingTimes
     alias st start
 
     desc 'finish [COMMENT]', 'Finish working'
-    def finish(comment: nil)
+    def finish(comment = nil)
+      puts comment if comment
       puts 'Yeah!!'
     end
 
