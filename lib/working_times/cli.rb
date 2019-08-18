@@ -10,10 +10,16 @@ module WorkingTimes
       puts 'Start!!'
     end
 
+    desc 'st [COMMENT]', 'Short hand for *start*'
+    alias st start
+
     desc 'finish [COMMENT]', 'Finish working'
     def finish(comment: nil)
       puts 'Yeah!!'
     end
+
+    desc 'fi [COMMENT]', 'Short hand for *finish*'
+    alias fi finish
 
     desc 'current', 'Print current time'
     def current
