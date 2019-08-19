@@ -11,6 +11,18 @@ RSpec.configure do |config|
   config.expect_with :rspec do |c|
     c.syntax = :expect
   end
+
+  # disable STDERR, STDOUT during examples run
+  original_stderr = $stderr
+  original_stdout = $stdout
+  config.before(:all) do
+    $stderr = File.open(File::NULL, 'w')
+    $stdout = File.open(File::NULL, 'w')
+  end
+  config.after(:all) do
+    $stderr = original_stderr
+    $stdout = original_stdout
+  end
 end
 
 # mock config
