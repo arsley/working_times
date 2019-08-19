@@ -2,6 +2,8 @@
 
 module WorkingTimes
   module Config
+    module_function
+
     # return where data directory is
     def data_dir
       File.expand_path(wtconf['DATADIR'])
@@ -38,19 +40,6 @@ module WorkingTimes
     # generate configuration file to ~/.wtconf when does not exist
     def generate_wtconf
       File.open(File.expand_path('~/.wtconf'), 'w') { |f| f.puts(default_conf.map { |k, v| "#{k}=#{v}" }) }
-    end
-
-    # generate data directory when does not exist
-    # it is usually called by 'start' command
-    def initialize_task
-      return if exist_data_dir?
-
-      puts 'data directory .wt not found, generated.'
-      Dir.mkdir(Config.data_dir)
-    end
-
-    def exist_data_dir?
-      File.exist?(Config.data_dir)
     end
   end
 end

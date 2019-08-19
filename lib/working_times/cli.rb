@@ -5,23 +5,20 @@ require 'active_support/time'
 
 module WorkingTimes
   class CLI < Thor
-    include Config
-
     option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
     desc 'start [COMMENT] <option>', 'Start working with comment.'
     def start(comment = nil)
-      initialize_task
-      work_on = options[:work_on].nil? ? default_work : options[:work_on]
+      State.initialize_data_dir
+      work_on = options[:work_on].nil? ? Config.default_work : options[:work_on]
       Record.new(timestamp: Time.now, comment: comment, work_on: work_on).start
     end
 
     desc 'st [COMMENT]', 'Short hand for *start*'
     alias st start
 
-    desc 'finish [COMMENT]', 'Finish working'
+    desc 'finish [COMMENT]', 'Finish working on current group.'
     def finish(comment = nil)
-      puts comment if comment
-      puts 'Yeah!!'
+      Record.new(timestamp: Time.now, comment: comment).finish
     end
 
     desc 'fi [COMMENT]', 'Short hand for *finish*'

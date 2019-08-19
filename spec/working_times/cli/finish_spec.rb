@@ -9,7 +9,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
 
   context 'when call without start working' do
     it 'shows "not started" message' do
-      msg = 'You are not starting work. Execute "wt start" to start working.'
+      msg = "You are not starting work. Execute \"wt start\" to start working.\n"
       expect { WorkingTimes::CLI.new.finish }.to output(msg).to_stdout
     end
   end

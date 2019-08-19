@@ -4,46 +4,35 @@ module WorkingTimes
   class Record
     attr_reader :timestamp, :comment, :work_on
 
-    def initialize(timestamp:, comment:, work_on:)
+    def initialize(timestamp:, comment:, work_on: nil)
       @timestamp = timestamp
       @comment   = comment
       @work_on   = work_on
     end
 
     def start
-      if working?
+      if State.working?
         puts "You are already on working at #{current_work}."
-        puts "To finish this, execute 'wt finish [COMMENT] -w #{current_work}'."
+        puts "To finish this, execute 'wt finish'."
         return
       end
-      start_work(work_on)
+
       File.open("#{Config.data_dir}/#{work_on}", 'a+') do |f|
         f.puts "start,#{comment},#{timestamp.rfc3339}"
       end
+      State.start_work(work_on)
     end
 
-    def self.finish
-      # code
-    end
+    def finish
+      unless State.working?
+        puts 'You are not starting work. Execute "wt start" to start working.'
+        return
+      end
 
-    private
-
-    def working?
-      File.exist?("#{Config.data_dir}/.working")
-    end
-
-    def current_work
-      File.readlines("#{Config.data_dir}/.working").last.chomp
-    end
-
-    # create ~/.wt/.working include what you working on
-    def start_work(work_on)
-      File.open("#{Config.data_dir}/.working", 'w+') { |f| f.puts work_on }
-    end
-
-    # delete 'working' flag
-    def finish_work
-      File.delete("#{Config.data_dir}/.working")
+      File.open("#{Config.data_dir}/#{State.current_work}", 'a+') do |f|
+        f.puts "finish,#{comment},#{timestamp.rfc3339}"
+      end
+      State.finish_work
     end
   end
 end
