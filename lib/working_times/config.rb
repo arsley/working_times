@@ -4,10 +4,12 @@ module WorkingTimes
   module Config
     module_function
 
+    # return where data directory is
     def data_dir
       wtconf['DATADIR']
     end
 
+    # return default working project/task/etc...
     def default_work
       wtconf['DEFAULTWORK']
     end

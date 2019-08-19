@@ -12,3 +12,17 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+# mock config
+# do not remove ACTUAL configurations
+module WorkingTimes::Config
+  module_function
+
+  def data_dir
+    File.expand_path('tmp/.wt')
+  end
+
+  def default_work
+    'default'
+  end
+end
