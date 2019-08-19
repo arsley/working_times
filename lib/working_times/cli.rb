@@ -5,10 +5,14 @@ require 'active_support/time'
 
 module WorkingTimes
   class CLI < Thor
-    desc 'start [COMMENT]', 'Start working with comment'
+    include Config
+
+    option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
+    desc 'start [COMMENT] <option>', 'Start working with comment.'
     def start(comment = nil)
-      puts comment if comment
-      puts 'Start!!'
+      initialize_task
+      work_on = options[:work_on].nil? ? default_work : options[:work_on]
+      Record.new(timestamp: Time.now, comment: comment, work_on: work_on).start
     end
 
     desc 'st [COMMENT]', 'Short hand for *start*'
@@ -22,10 +26,5 @@ module WorkingTimes
 
     desc 'fi [COMMENT]', 'Short hand for *finish*'
     alias fi finish
-
-    desc 'current', 'Print current time'
-    def current
-      puts Time.now.rfc3339
-    end
   end
 end
