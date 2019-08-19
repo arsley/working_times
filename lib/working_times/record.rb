@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'active_support/time'
+
 module WorkingTimes
   class Record
     attr_reader :timestamp, :comment, :work_on
