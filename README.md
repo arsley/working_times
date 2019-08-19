@@ -5,7 +5,7 @@
 ![GitHub](https://img.shields.io/github/license/arsley/working_times?style=flat-square)
 ![Travis (.com) branch](https://img.shields.io/travis/com/arsley/working_times/master?style=flat-square)
 
-Store your woking(worked) time simply.
+Store your working(worked) time simply.
 It's just record woking timestamp on specific file.
 By default, use `~/.wtconf` as a configuration, `~/.wt` as a data directory and `~/.wt/default` as a file to record.
 
@@ -45,7 +45,7 @@ $ wt start
 You can set comment with it.
 
 ```
-$ wt start "Today, I will implement some gread feature!"
+$ wt start "Today, I will implement some great feature!"
 ```
 
 And also, you can specify group depends on your work type.
