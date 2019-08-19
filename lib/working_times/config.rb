@@ -43,7 +43,10 @@ module WorkingTimes
     # generate data directory when does not exist
     # it is usually called by 'start' command
     def initialize_task
-      Dir.mkdir(Config.data_dir) unless exist_data_dir?
+      return if exist_data_dir?
+
+      puts 'data directory .wt not found, generated.'
+      Dir.mkdir(Config.data_dir)
     end
 
     def exist_data_dir?

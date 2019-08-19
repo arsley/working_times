@@ -10,15 +10,15 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call first time' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'creates directory to store WorkingTimes\' data at Config.data_dir' do
+    it 'creates directory to store WorkingTimes\' data at data_dir' do
       expect(File.exist?(data_dir)).to be_truthy
     end
 
-    it 'creates Config.data_dir/Config.default_work to store working time record' do
+    it 'creates data_dir/default_work to store working time record' do
       expect(File.exist?("#{data_dir}/#{default_work}")).to be_truthy
     end
 
-    it 'creates Config.data_dir/.working to indicate "On working".' do
+    it 'creates data_dir/.working to indicate "On working".' do
       expect(File.exist?("#{data_dir}/.working")).to be_truthy
     end
   end
@@ -33,7 +33,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
       expect(timestamp).not_to be_empty
     end
 
-    it 'creates Config.data_dir/.working to indicate "On working".' do
+    it 'creates data_dir/.working to indicate "On working".' do
       expect(File.exist?("#{data_dir}/.working")).to be_truthy
     end
   end
@@ -48,7 +48,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
       expect(timestamp).not_to be_empty
     end
 
-    it 'creates Config.data_dir/.working to indicate "On working".' do
+    it 'creates data_dir/.working to indicate "On working".' do
       expect(File.exist?("#{data_dir}/.working")).to be_truthy
     end
   end
