@@ -12,7 +12,7 @@ module WorkingTimes
       Record.new(timestamp: Time.now, comment: comment, work_on: work_on).start
     end
 
-    desc 'st [COMMENT]', 'Short hand for *start*'
+    desc 'st [COMMENT] <option>', 'Short hand for *start*'
     alias st start
 
     desc 'finish [COMMENT]', 'Finish working on current group.'
