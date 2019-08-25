@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module WorkingTimes
-  VERSION = '0.1.1'
+  VERSION = '0.2.0'
 
   START_MSG = [
     'Have a nice work!',
