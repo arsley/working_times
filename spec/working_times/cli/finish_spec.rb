@@ -7,6 +7,11 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
   let(:default_work) { WorkingTimes::Config.default_work }
   after { FileUtils.rm_rf(WorkingTimes::Config.data_dir) }
 
+  it 'shows "finished" message' do
+    WorkingTimes::CLI.new.start # work start
+    expect { WorkingTimes::CLI.new.finish }.to output(finish_msg_regexp).to_stdout
+  end
+
   context 'when call without start working' do
     it 'shows "not started" message' do
       msg = "You are not starting work. Execute \"wt start\" to start working.\n"

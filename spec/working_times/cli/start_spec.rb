@@ -7,6 +7,22 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   let(:default_work) { WorkingTimes::Config.default_work }
   after { FileUtils.rm_rf(WorkingTimes::Config.data_dir) }
 
+  it 'shows "started" message' do
+    expect { WorkingTimes::CLI.new.start }.to output(start_msg_regexp).to_stdout
+  end
+
+  context 'when work is already started' do
+    before { WorkingTimes::CLI.new.start }
+
+    it 'shows "already started" and "how to finish" message' do
+      msg = <<~MSG
+        You are already on working at default.
+        To finish this, execute 'wt finish'.
+      MSG
+      expect { WorkingTimes::CLI.new.start }.to output(msg).to_stdout
+    end
+  end
+
   context 'when call first time' do
     before { WorkingTimes::CLI.new.start }
 

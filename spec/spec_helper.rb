@@ -38,3 +38,13 @@ module WorkingTimes::Config
     'default'
   end
 end
+
+# regexp helper for asserting cli output on 'wt start'
+def start_msg_regexp
+  Regexp.new(WorkingTimes::START_MSG.map { |msg| msg + '|' }.join[0..-2])
+end
+
+# regexp helper for asserting cli output on 'wt finish'
+def finish_msg_regexp
+  Regexp.new(WorkingTimes::FINISH_MSG.map { |msg| msg + '|' }.join[0..-2])
+end
