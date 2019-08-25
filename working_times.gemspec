@@ -1,6 +1,6 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'working_times/version'
+require 'working_times/constants'
 
 Gem::Specification.new do |spec|
   spec.name          = 'working_times'

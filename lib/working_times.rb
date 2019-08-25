@@ -1,4 +1,4 @@
-require 'working_times/version'
+require 'working_times/constants'
 require 'working_times/config'
 require 'working_times/state'
 require 'working_times/record'
