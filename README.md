@@ -32,7 +32,7 @@ Commands:
   wt fi [COMMENT]              # Short hand for *finish*
   wt finish [COMMENT]          # Finish working on current group.
   wt help [COMMAND]            # Describe available commands or one specific command
-  wt st [COMMENT]              # Short hand for *start*
+  wt st [COMMENT] <option>     # Short hand for *start*
   wt start [COMMENT] <option>  # Start working with comment.
 ```
 
