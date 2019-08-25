@@ -26,13 +26,17 @@ module WorkingTimes
     end
 
     # create ~/.wt/.working include what you working on
+    # and show 'started' message
     def start_work(work_on)
       File.open("#{Config.data_dir}/.working", 'w+') { |f| f.puts work_on }
+      puts START_MSG.sample
     end
 
     # delete 'working' flag
+    # and show 'finished' message
     def finish_work
       File.delete("#{Config.data_dir}/.working")
+      puts FINISH_MSG.sample
     end
   end
 end
