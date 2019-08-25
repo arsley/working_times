@@ -14,7 +14,7 @@ module WorkingTimes
 
     def start
       if State.working?
-        puts "You are already on working at #{current_work}."
+        puts "You are already on working at #{State.current_work}."
         puts "To finish this, execute 'wt finish'."
         return
       end
