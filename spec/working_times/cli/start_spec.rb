@@ -5,6 +5,7 @@ require 'fileutils'
 RSpec.describe 'WorkingTimes::CLI#start' do
   let(:data_dir) { WorkingTimes::Config.data_dir }
   let(:default_work) { WorkingTimes::Config.default_work }
+  let(:last_record) { File.readlines("#{data_dir}/#{default_work}").last.chomp }
   after { FileUtils.rm_rf(WorkingTimes::Config.data_dir) }
 
   it 'shows "started" message' do
@@ -43,7 +44,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
     before { WorkingTimes::CLI.new.start }
 
     it 'adds record like "STARTED_AT,,,start"' do
-      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      started_at, finished_at, comment, label = last_record.split(',')
       expect(started_at).not_to be_empty
       expect(finished_at).to be_empty
       expect(comment).to be_empty
@@ -59,7 +60,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
     before { WorkingTimes::CLI.new.start('comment') }
 
     it 'adds record like "STARTED_AT,,COMMENT,start"' do
-      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      started_at, finished_at, comment, label = last_record.split(',')
       expect(started_at).not_to be_empty
       expect(finished_at).to be_empty
       expect(comment).not_to be_empty

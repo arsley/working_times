@@ -5,6 +5,7 @@ require 'fileutils'
 RSpec.describe 'WorkingTimes::CLI#finish' do
   let(:data_dir) { WorkingTimes::Config.data_dir }
   let(:default_work) { WorkingTimes::Config.default_work }
+  let(:last_record) { File.readlines("#{data_dir}/#{default_work}").last.chomp }
   after { FileUtils.rm_rf(WorkingTimes::Config.data_dir) }
 
   it 'shows "finished" message' do
@@ -26,7 +27,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
     end
 
     it 'adds record like ",FINISHED_AT,,finish"' do
-      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      started_at, finished_at, comment, label = last_record.split(',')
       expect(started_at).to be_empty
       expect(finished_at).not_to be_empty
       expect(comment).to be_empty
@@ -49,7 +50,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
     end
 
     it 'adds record like ",FINISHED_AT,COMMENT,finish"' do
-      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      started_at, finished_at, comment, label = last_record.split(',')
       expect(started_at).to be_empty
       expect(finished_at).not_to be_empty
       expect(comment).not_to be_empty
