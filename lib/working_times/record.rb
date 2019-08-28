@@ -20,7 +20,7 @@ module WorkingTimes
       end
 
       File.open("#{Config.data_dir}/#{work_on}", 'a+') do |f|
-        f.puts "start,#{comment},#{timestamp.rfc3339}"
+        f.puts "#{timestamp.rfc3339},,#{comment},start"
       end
       State.start_work(work_on)
     end
@@ -32,7 +32,7 @@ module WorkingTimes
       end
 
       File.open("#{Config.data_dir}/#{State.current_work}", 'a+') do |f|
-        f.puts "finish,#{comment},#{timestamp.rfc3339}"
+        f.puts ",#{timestamp.rfc3339},#{comment},finish"
       end
       State.finish_work
     end
