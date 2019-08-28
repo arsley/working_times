@@ -42,11 +42,12 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call without comment' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'adds record like "start,,TIMESTAMP"' do
-      label, comment, timestamp = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
-      expect(label).to eq('start')
+    it 'adds record like "STARTED_AT,,,start"' do
+      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      expect(started_at).not_to be_empty
+      expect(finished_at).to be_empty
       expect(comment).to be_empty
-      expect(timestamp).not_to be_empty
+      expect(label).to eq('start')
     end
 
     it 'creates data_dir/.working to indicate "On working".' do
@@ -57,11 +58,12 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call with comment' do
     before { WorkingTimes::CLI.new.start('comment') }
 
-    it 'adds record like "start,COMMENT,TIMESTAMP"' do
-      label, comment, timestamp = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
-      expect(label).to eq('start')
+    it 'adds record like "STARTED_AT,,COMMENT,start"' do
+      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      expect(started_at).not_to be_empty
+      expect(finished_at).to be_empty
       expect(comment).not_to be_empty
-      expect(timestamp).not_to be_empty
+      expect(label).to eq('start')
     end
 
     it 'creates data_dir/.working to indicate "On working".' do

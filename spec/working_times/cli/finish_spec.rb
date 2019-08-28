@@ -25,11 +25,12 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
       WorkingTimes::CLI.new.finish
     end
 
-    it 'adds record like "finish,,TIMESTAMP"' do
-      label, comment, timestamp = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
-      expect(label).to eq('finish')
+    it 'adds record like ",FINISHED_AT,,finish"' do
+      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      expect(started_at).to be_empty
+      expect(finished_at).not_to be_empty
       expect(comment).to be_empty
-      expect(timestamp).not_to be_empty
+      expect(label).to eq('finish')
     end
 
     it 'presents 2 records on working file' do
@@ -47,11 +48,12 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
       WorkingTimes::CLI.new.finish('comment')
     end
 
-    it 'adds record like "finish,COMMENT,TIMESTAMP"' do
-      label, comment, timestamp = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
-      expect(label).to eq('finish')
+    it 'adds record like ",FINISHED_AT,COMMENT,finish"' do
+      started_at, finished_at, comment, label = File.readlines("#{data_dir}/#{default_work}").last.chomp.split(',')
+      expect(started_at).to be_empty
+      expect(finished_at).not_to be_empty
       expect(comment).not_to be_empty
-      expect(timestamp).not_to be_empty
+      expect(label).to eq('finish')
     end
 
     it 'presents 2 records on working file' do
