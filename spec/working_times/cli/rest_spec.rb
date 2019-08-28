@@ -39,7 +39,7 @@ RSpec.describe 'WorkingTimes::CLI#rest' do
     end
 
     it 'shows "You can rest until hh:mm:ss." message' do
-      msg_regex = /You can rest until \d{2}:\d{2}:\d{2}./
+      msg_regex = Regexp.new('You can rest until \d{2}:\d{2}:\d{2}.')
       expect { WorkingTimes::CLI.new.rest('1h30m') }.to output(msg_regex).to_stdout
     end
   end
