@@ -2,7 +2,7 @@
 
 module WorkingTimes
   module Config
-    module_function
+    private
 
     # return where data directory is
     def data_dir

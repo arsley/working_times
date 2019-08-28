@@ -28,7 +28,7 @@ end
 # mock config
 # do not remove ACTUAL configurations
 module WorkingTimes::Config
-  module_function
+  private
 
   def data_dir
     File.expand_path('tmp/.wt')
@@ -37,6 +37,15 @@ module WorkingTimes::Config
   def default_work
     'default'
   end
+end
+
+# directory helper for spec
+def data_dir
+  File.expand_path('tmp/.wt')
+end
+
+def default_work
+  'default'
 end
 
 # regexp helper for asserting cli output on 'wt start'

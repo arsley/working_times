@@ -4,12 +4,20 @@ require 'thor'
 
 module WorkingTimes
   class CLI < Thor
+    include State
+
     option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
     desc 'start [COMMENT] <option>', 'Start working with comment.'
     def start(comment = nil)
-      State.initialize_data_dir
-      work_on = options[:work_on].nil? ? Config.default_work : options[:work_on]
-      Record.new(timestamp: Time.now, comment: comment, work_on: work_on).start
+      initialize_data_dir
+      if working?
+        puts "You are already on working at #{current_work}."
+        puts "To finish this, execute 'wt finish'."
+        return
+      end
+
+      Record.new(timestamp: Time.now, comment: comment, work_on: options[:work_on]).start
+      start_work(options[:work_on])
     end
 
     desc 'st [COMMENT] <option>', 'Short hand for *start*'
@@ -17,7 +25,13 @@ module WorkingTimes
 
     desc 'finish [COMMENT]', 'Finish working on current group.'
     def finish(comment = nil)
+      unless working?
+        puts 'You are not starting work. Execute "wt start" to start working.'
+        return
+      end
+
       Record.new(timestamp: Time.now, comment: comment).finish
+      finish_work
     end
 
     desc 'fi [COMMENT]', 'Short hand for *finish*'
@@ -31,6 +45,11 @@ module WorkingTimes
           e.g. wt rest 1h30m
           e.g. wt rest '1 hour 30 minutes'
         MSG
+        return
+      end
+
+      unless working?
+        puts 'You are not starting work. Execute "wt start" to start working.'
         return
       end
 
