@@ -8,6 +8,18 @@
 Store your working(worked) time simply.
 It's just record woking timestamp on specific file.
 By default, use `~/.wtconf` as a configuration, `~/.wt` as a data directory and `~/.wt/default` as a file to record.
+Default record formats are:
+
+```
+# on `wt start`
+STARTED_AT,,COMMENT,start
+
+# on `wt finish`
+,FINISHED_AT,COMMENT,finish
+
+# on `wt rest`
+STARTED_AT,FINISHED_AT,,rest
+```
 
 ## Feature
 
@@ -32,6 +44,7 @@ Commands:
   wt fi [COMMENT]              # Short hand for *finish*
   wt finish [COMMENT]          # Finish working on current group.
   wt help [COMMAND]            # Describe available commands or one specific command
+  wt rest DURATION             # Record resting time. e.g. 'wt rest 1h30m'
   wt st [COMMENT] <option>     # Short hand for *start*
   wt start [COMMENT] <option>  # Start working with comment.
 ```
@@ -55,6 +68,21 @@ If you not specify group, WorkingTimes uses `DEFAULTWORK` on configuration.
 $ wt start --work-on=remote1
 $ wt start -w daily
 ```
+
+A: How long do you want to take a rest? <br>
+B: I need 45 minutes. <br>
+C: Ah... 1 hour? <br>
+D: '1h 30m' <br>
+A:
+
+```
+$ wt rest 45m # B
+$ wt rest 1h  # C
+$ wt rest '1h 30m' # D
+```
+
+(You can use 'hour' as 'h' and 'minute' as 'm')
+(`DURATION` must be a **single** string)
 
 Finish working with `wt finish`.
 It ends **current** working so you have not to specify group.
