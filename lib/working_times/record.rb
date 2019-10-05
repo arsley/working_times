@@ -50,7 +50,7 @@ module WorkingTimes
     end
 
     def show_rest_msg
-      Time::DATE_FORMATS[:rest_finished_at] = '%H:%m:%S'
+      Time::DATE_FORMATS[:rest_finished_at] = '%H:%M:%S'
       puts "You can rest until #{@finished_at.to_s(:rest_finished_at)}."
     end
   end
