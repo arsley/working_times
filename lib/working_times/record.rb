@@ -30,7 +30,7 @@ module WorkingTimes
     def rest
       parse_rest_finished_at
       File.open("#{data_dir}/#{current_work}", 'a+') do |f|
-        f.puts "#{timestamp.rfc3339},#{@finished_at},#{comment},rest"
+        f.puts "#{timestamp.rfc3339},#{@finished_at.rfc3339},#{comment},rest"
       end
 
       show_rest_msg
