@@ -16,8 +16,20 @@ jobs:
     - uses: actions/setup-ruby@v1
       with:
         ruby-version: 2.6
+
     - name: Build and test with Rake
       run: |
         gem install bundler
         bundle install
         bundle exec rake
+
+    - name: Notify status to slack
+      uses: 8398a7/action-slack@v2
+      with:
+        status: ${{ job.status }}
+        author_name: GHA
+        icon_emoji: ':santa:'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      if: always()
