@@ -1,0 +1,33 @@
+Style:
+  AsciiComments:
+    Enabled: false
+  Documentation:
+    Enabled: false
+  StringLiterals:
+    Enabled: false
+  ClassAndModuleChildren:
+    Enabled: false
+# FrozenStringLiteralComment:
+#   Enabled: false
+#
+# rubocop cannot use above... why?????
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Naming/FileName:
+  Enabled: false
+
+Metrics:
+  ClassLength:
+    Enabled: false
+  MethodLength:
+    Enabled: false
+
+Bundler/OrderedGems:
+  Enabled: false
+
+GemSpec/OrderedDependencies:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 100
