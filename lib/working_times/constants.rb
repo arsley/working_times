@@ -12,4 +12,11 @@ module WorkingTimes
     'Great job!',
     'Time to beer!'
   ].freeze
+
+  SCHEMA = [
+    'started_at',  # DateTime#rfc3339
+    'finished_at', # DateTime#rfc3339
+    'rest_sec',    # Integer (inidicates second)
+    'comment'      # String
+  ].freeze
 end

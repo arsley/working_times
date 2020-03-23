@@ -9,12 +9,14 @@ module WorkingTimes
     option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
     desc 'start [COMMENT] <option>', 'Start working with comment.'
     def start(comment = nil)
-      initialize_data_dir
       if working?
         puts "You are already on working at #{current_work}."
         puts "To finish this, execute 'wt finish'."
         return
       end
+
+      initialize_data_dir
+      initialize_work_log(options[:work_on])
 
       Record.new(timestamp: Time.now, comment: comment, work_on: options[:work_on]).start
       start_work(options[:work_on])

@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
 require 'active_support/time'
+require 'csv'
 
 module WorkingTimes
   class Record
     include State
+
+    OPTIONS = { headers: true, return_headers: true, write_headers: true }.freeze
 
     attr_reader :timestamp, :comment, :duration, :work_on
 
@@ -16,8 +19,8 @@ module WorkingTimes
     end
 
     def start
-      File.open("#{data_dir}/#{work_on}", 'a+') do |f|
-        f.puts "#{timestamp.rfc3339},,#{comment},start"
+      CSV.open("#{data_dir}/#{work_on}", 'a+', OPTIONS) do |csv|
+        csv.puts([timestamp.rfc3339, '', 0, comment])
       end
     end
 

@@ -15,6 +15,14 @@ module WorkingTimes
       Dir.mkdir(data_dir)
     end
 
+    # creates csv with header
+    def initialize_work_log(work_on)
+      work_on = work_on.nil? ? default_work : work_on
+      return if File.exist?("#{data_dir}/#{work_on}")
+
+      File.write("#{data_dir}/#{work_on}", SCHEMA.join(',') + "\n")
+    end
+
     def exist_data_dir?
       File.exist?(data_dir)
     end
