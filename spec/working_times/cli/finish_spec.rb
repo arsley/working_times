@@ -3,7 +3,8 @@
 require 'fileutils'
 
 RSpec.describe 'WorkingTimes::CLI#finish' do
-  let(:last_record) { File.readlines("#{data_dir}/#{default_work}").last.chomp }
+  let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
+  let(:last_record) { csv.last }
   after { FileUtils.rm_rf(data_dir) }
 
   it 'shows "finished" message' do
@@ -24,16 +25,12 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
       WorkingTimes::CLI.new.finish
     end
 
-    it 'adds record like ",FINISHED_AT,,finish"' do
-      started_at, finished_at, comment, label = last_record.split(',')
+    it 'updates record to \'STARTED_AT,FINISHED_AT,,\'' do
+      started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).to be_empty
       expect(finished_at).not_to be_empty
+      expect(rest_sec).to be_empty
       expect(comment).to be_empty
-      expect(label).to eq('finish')
-    end
-
-    it 'presents 2 records on working file' do
-      expect(File.readlines("#{data_dir}/#{default_work}").size).to eq(2)
     end
 
     it 'deletes data_dir/.working' do
@@ -47,16 +44,12 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
       WorkingTimes::CLI.new.finish('comment')
     end
 
-    it 'adds record like ",FINISHED_AT,COMMENT,finish"' do
-      started_at, finished_at, comment, label = last_record.split(',')
+    it 'updates record to \'STARTED_AT,FINISHED_AT,,"COMMENT"\'' do
+      started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).to be_empty
       expect(finished_at).not_to be_empty
+      expect(rest_sec).to be_empty
       expect(comment).not_to be_empty
-      expect(label).to eq('finish')
-    end
-
-    it 'presents 2 records on working file' do
-      expect(File.readlines("#{data_dir}/#{default_work}").size).to eq(2)
     end
 
     it 'deletes data_dir/.working' do
