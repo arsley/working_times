@@ -30,7 +30,7 @@ RSpec.describe 'WorkingTimes::CLI#rest' do
   context 'when call with valid duration' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'updates record to \'STARTED_AT,,REST_SEC,\'' do
+    it 'updates record to \'"STARTED_AT",,"REST_SEC",\'' do
       WorkingTimes::CLI.new.rest(rest_hour_with_half)
       started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).not_to be_empty

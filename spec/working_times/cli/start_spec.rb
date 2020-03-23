@@ -50,11 +50,11 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call without comment' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'adds record like \'STARTED_AT,,,\'' do
+    it 'adds record like \'"STARTED_AT",,"0",\'' do
       started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).not_to be_empty
       expect(finished_at).to be_empty
-      expect(rest_sec).to be_empty
+      expect(rest_sec).to eq('0')
       expect(comment).to be_empty
     end
 
@@ -66,11 +66,11 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call with comment' do
     before { WorkingTimes::CLI.new.start('comment') }
 
-    it 'adds record like \'STARTED_AT,,,"COMMENT"\'' do
+    it 'adds record like \'"STARTED_AT",,"0","COMMENT"\'' do
       started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).not_to be_empty
       expect(finished_at).to be_empty
-      expect(rest_sec).to be_empty
+      expect(rest_sec).to eq('0')
       expect(comment).not_to be_empty
     end
 
