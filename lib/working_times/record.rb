@@ -1,4 +1,4 @@
-# frozen_string_literal: true
+# frozen_string_literal: false
 
 require 'active_support/time'
 require 'csv'
@@ -25,9 +25,15 @@ module WorkingTimes
     end
 
     def finish
-      File.open("#{data_dir}/#{current_work}", 'a+') do |f|
-        f.puts ",#{timestamp.rfc3339},#{comment},finish"
+      updated_csv = ''
+      CSV.filter(File.open("#{data_dir}/#{current_work}"), updated_csv, OPTIONS) do |row|
+        next if row.header_row?
+        next unless row['finished_at'].empty?
+
+        row['finished_at'] = timestamp.rfc3339
+        row['comment'] = comment
       end
+      File.write("#{data_dir}/#{current_work}", updated_csv)
     end
 
     def rest

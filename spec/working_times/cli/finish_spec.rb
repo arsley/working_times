@@ -27,7 +27,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
 
     it 'updates record to \'"STARTED_AT","FINISHED_AT","0",\'' do
       started_at, finished_at, rest_sec, comment = last_record
-      expect(started_at).to be_empty
+      expect(started_at).not_to be_empty
       expect(finished_at).not_to be_empty
       expect(rest_sec).to eq('0')
       expect(comment).to be_empty
@@ -46,7 +46,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
 
     it 'updates record to \'"STARTED_AT","FINISHED_AT","0","COMMENT"\'' do
       started_at, finished_at, rest_sec, comment = last_record
-      expect(started_at).to be_empty
+      expect(started_at).not_to be_empty
       expect(finished_at).not_to be_empty
       expect(rest_sec).to eq('0')
       expect(comment).not_to be_empty

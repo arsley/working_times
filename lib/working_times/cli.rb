@@ -8,7 +8,7 @@ module WorkingTimes
 
     option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
     desc 'start [COMMENT] <option>', 'Start working with comment.'
-    def start(comment = nil)
+    def start(comment = '')
       if working?
         puts "You are already on working at #{current_work}."
         puts "To finish this, execute 'wt finish'."
@@ -26,7 +26,7 @@ module WorkingTimes
     alias st start
 
     desc 'finish [COMMENT]', 'Finish working on current group.'
-    def finish(comment = nil)
+    def finish(comment = '')
       unless working?
         puts 'You are not starting work. Execute "wt start" to start working.'
         return
