@@ -1,5 +1,5 @@
 module WorkingTimes
-  VERSION = '0.4.0'
+  VERSION = '0.5.1'.freeze
 
   START_MSG = [
     'Have a nice work!',
