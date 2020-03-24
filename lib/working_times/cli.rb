@@ -16,7 +16,7 @@ module WorkingTimes
       initialize_data_dir
       initialize_work_log(options[:work_on])
 
-      Record.new(timestamp: Time.now, comment: comment, work_on: options[:work_on]).start
+      Record.new(timestamp: DateTime.now, comment: comment, work_on: options[:work_on]).start
       start_work(options[:work_on])
     end
 
@@ -30,7 +30,7 @@ module WorkingTimes
         return
       end
 
-      Record.new(timestamp: Time.now, comment: comment).finish
+      Record.new(timestamp: DateTime.now, comment: comment).finish
       finish_work
     end
 
@@ -53,7 +53,7 @@ module WorkingTimes
         return
       end
 
-      Record.new(timestamp: Time.now, duration: duration).rest
+      Record.new(timestamp: DateTime.now, duration: duration).rest
     end
   end
 end
