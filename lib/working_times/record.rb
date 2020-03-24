@@ -1,10 +1,11 @@
-# frozen_string_literal: true
-
 require 'active_support/time'
+require 'csv'
 
 module WorkingTimes
   class Record
     include State
+
+    OPTIONS = { headers: true, return_headers: true, write_headers: true }.freeze
 
     attr_reader :timestamp, :comment, :duration, :work_on
 
@@ -16,42 +17,47 @@ module WorkingTimes
     end
 
     def start
-      File.open("#{data_dir}/#{work_on}", 'a+') do |f|
-        f.puts "#{timestamp.rfc3339},,#{comment},start"
+      CSV.open("#{data_dir}/#{work_on}", 'a+', OPTIONS) do |csv|
+        csv.puts([timestamp.rfc3339, '', 0, comment])
       end
     end
 
     def finish
-      File.open("#{data_dir}/#{current_work}", 'a+') do |f|
-        f.puts ",#{timestamp.rfc3339},#{comment},finish"
+      updated_csv = ''
+      CSV.filter(File.open("#{data_dir}/#{current_work}"), updated_csv, OPTIONS) do |row|
+        next if row.header_row?
+        next unless row['finished_at'].empty?
+
+        row['finished_at'] = timestamp.rfc3339
+        row['comment'] = comment
       end
+      File.write("#{data_dir}/#{current_work}", updated_csv)
     end
 
     def rest
-      parse_rest_finished_at
-      File.open("#{data_dir}/#{current_work}", 'a+') do |f|
-        f.puts "#{timestamp.rfc3339},#{@finished_at.rfc3339},#{comment},rest"
-      end
+      parse_rest_sec
 
-      show_rest_msg
+      updated_csv = ''
+      CSV.filter(File.open("#{data_dir}/#{current_work}"), updated_csv, OPTIONS) do |row|
+        next if row.header_row?
+        next unless row['finished_at'].empty?
+
+        row['rest_sec'] = @rest_sec
+      end
+      File.write("#{data_dir}/#{current_work}", updated_csv)
     end
 
     private
 
-    def parse_rest_finished_at
-      @finished_at = timestamp
+    def parse_rest_sec
+      @rest_sec = 0
       if /(?<hour>\d+)\s*h/ =~ duration
-        @finished_at += hour.to_i.hour
+        @rest_sec += hour.to_i * 3600
       end
 
       if /(?<minute>\d+)\s*m/ =~ duration
-        @finished_at += minute.to_i.minute
+        @rest_sec += minute.to_i * 60
       end
-    end
-
-    def show_rest_msg
-      Time::DATE_FORMATS[:rest_finished_at] = '%H:%M:%S'
-      puts "You can rest until #{@finished_at.to_s(:rest_finished_at)}."
     end
   end
 end

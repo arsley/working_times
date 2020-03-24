@@ -1,7 +1,5 @@
-# frozen_string_literal: true
-
 module WorkingTimes
-  VERSION = '0.3.2'
+  VERSION = '0.4.0'
 
   START_MSG = [
     'Have a nice work!',
@@ -11,5 +9,12 @@ module WorkingTimes
   FINISH_MSG = [
     'Great job!',
     'Time to beer!'
+  ].freeze
+
+  SCHEMA = [
+    'started_at',  # DateTime#rfc3339
+    'finished_at', # DateTime#rfc3339
+    'rest_sec',    # Integer (inidicates second)
+    'comment'      # String
   ].freeze
 end

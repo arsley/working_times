@@ -1,7 +1,8 @@
-# frozen_string_literal: true
-
 RSpec.describe 'WorkingTimes::CLI#rest' do
-  let(:last_record) { File.readlines("#{data_dir}/#{default_work}").last.chomp }
+  let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
+  let(:last_record) { csv.last }
+  let(:rest_hour_with_half) { '1h 30m' }
+  let(:sec_hour_with_half) { '5400' }
   after { FileUtils.rm_rf(data_dir) }
 
   context 'when call without start working' do
@@ -27,18 +28,13 @@ RSpec.describe 'WorkingTimes::CLI#rest' do
   context 'when call with valid duration' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'adds record like "STARTED_AT,FINISHED_AT,,rest"' do
-      WorkingTimes::CLI.new.rest('1h30m')
-      started_at, finished_at, comment, label = last_record.split(',')
+    it 'updates record to \'"STARTED_AT",,"REST_SEC",\'' do
+      WorkingTimes::CLI.new.rest(rest_hour_with_half)
+      started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).not_to be_empty
-      expect(finished_at).not_to be_empty
+      expect(finished_at).to be_empty
+      expect(rest_sec).to eq(sec_hour_with_half)
       expect(comment).to be_empty
-      expect(label).to eq('rest')
-    end
-
-    it 'shows "You can rest until hh:mm:ss." message' do
-      msg_regex = Regexp.new('You can rest until \d{2}:\d{2}:\d{2}.')
-      expect { WorkingTimes::CLI.new.rest('1h30m') }.to output(msg_regex).to_stdout
     end
   end
 end

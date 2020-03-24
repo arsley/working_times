@@ -8,17 +8,10 @@
 Store your working(worked) time simply.
 It's just record woking timestamp on specific file.
 By default, use `~/.wtconf` as a configuration, `~/.wt` as a data directory and `~/.wt/default` as a file to record.
-Default record formats are:
+Default record format is:
 
 ```
-# on `wt start`
-STARTED_AT,,COMMENT,start
-
-# on `wt finish`
-,FINISHED_AT,COMMENT,finish
-
-# on `wt rest`
-STARTED_AT,FINISHED_AT,,rest
+STARTED_AT,FINISHED_AT,REST_SEC,COMMEN
 ```
 
 ## Feature
@@ -135,6 +128,7 @@ Check behavior without installation.
 
 ```
 $ bundle exec exe/wt
+#=> generates .wtconf and .wt/ under tmp/
 ```
 
 ## Contributing

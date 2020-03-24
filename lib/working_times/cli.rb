@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'thor'
 
 module WorkingTimes
@@ -8,15 +6,17 @@ module WorkingTimes
 
     option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
     desc 'start [COMMENT] <option>', 'Start working with comment.'
-    def start(comment = nil)
-      initialize_data_dir
+    def start(comment = '')
       if working?
         puts "You are already on working at #{current_work}."
         puts "To finish this, execute 'wt finish'."
         return
       end
 
-      Record.new(timestamp: Time.now, comment: comment, work_on: options[:work_on]).start
+      initialize_data_dir
+      initialize_work_log(options[:work_on])
+
+      Record.new(timestamp: DateTime.now, comment: comment, work_on: options[:work_on]).start
       start_work(options[:work_on])
     end
 
@@ -24,13 +24,13 @@ module WorkingTimes
     alias st start
 
     desc 'finish [COMMENT]', 'Finish working on current group.'
-    def finish(comment = nil)
+    def finish(comment = '')
       unless working?
         puts 'You are not starting work. Execute "wt start" to start working.'
         return
       end
 
-      Record.new(timestamp: Time.now, comment: comment).finish
+      Record.new(timestamp: DateTime.now, comment: comment).finish
       finish_work
     end
 
@@ -53,7 +53,7 @@ module WorkingTimes
         return
       end
 
-      Record.new(timestamp: Time.now, duration: duration).rest
+      Record.new(timestamp: DateTime.now, duration: duration).rest
     end
   end
 end

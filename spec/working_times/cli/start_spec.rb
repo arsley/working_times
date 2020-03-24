@@ -1,9 +1,9 @@
-# frozen_string_literal: true
-
 require 'fileutils'
 
 RSpec.describe 'WorkingTimes::CLI#start' do
-  let(:last_record) { File.readlines("#{data_dir}/#{default_work}").last.chomp }
+  let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
+  let(:header) { csv.first }
+  let(:last_record) { csv.last }
   after { FileUtils.rm_rf(data_dir) }
 
   it 'shows "started" message' do
@@ -36,17 +36,24 @@ RSpec.describe 'WorkingTimes::CLI#start' do
     it 'creates data_dir/.working to indicate "On working".' do
       expect(File.exist?("#{data_dir}/.working")).to be_truthy
     end
+
+    it 'includes header like \'started_at,finished_at,rest_sec,comment\' on data_dir/default_work' do
+      expect(header[0]).to eq('started_at')
+      expect(header[1]).to eq('finished_at')
+      expect(header[2]).to eq('rest_sec')
+      expect(header[3]).to eq('comment')
+    end
   end
 
   context 'when call without comment' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'adds record like "STARTED_AT,,,start"' do
-      started_at, finished_at, comment, label = last_record.split(',')
+    it 'adds record like \'"STARTED_AT",,"0",\'' do
+      started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).not_to be_empty
       expect(finished_at).to be_empty
+      expect(rest_sec).to eq('0')
       expect(comment).to be_empty
-      expect(label).to eq('start')
     end
 
     it 'creates data_dir/.working to indicate "On working".' do
@@ -57,12 +64,12 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call with comment' do
     before { WorkingTimes::CLI.new.start('comment') }
 
-    it 'adds record like "STARTED_AT,,COMMENT,start"' do
-      started_at, finished_at, comment, label = last_record.split(',')
+    it 'adds record like \'"STARTED_AT",,"0","COMMENT"\'' do
+      started_at, finished_at, rest_sec, comment = last_record
       expect(started_at).not_to be_empty
       expect(finished_at).to be_empty
+      expect(rest_sec).to eq('0')
       expect(comment).not_to be_empty
-      expect(label).to eq('start')
     end
 
     it 'creates data_dir/.working to indicate "On working".' do

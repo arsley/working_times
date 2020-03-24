@@ -1,10 +1,9 @@
 name: Ruby
 
 on:
-  push:
-    branches: [ master ]
   pull_request:
-    branches: [ master ]
+  release:
+    types: [publish]
 
 jobs:
   build:
@@ -23,6 +22,10 @@ jobs:
         bundle install
         bundle exec rake
 
+    - name: Publish to RubyGems
+      run: bundle exec rake release
+      if: github.event_name == 'release'
+
     - name: Notify status to slack
       uses: 8398a7/action-slack@v2
       with:
@@ -32,4 +35,4 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      if: always()
+      if: failure()
