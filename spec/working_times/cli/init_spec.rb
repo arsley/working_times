@@ -23,16 +23,12 @@ RSpec.describe 'WorkingTimes::CLI#init' do
       expect(Dir.exist?(File.join(data_dir, 'terms'))).to be_truthy
     end
 
-    it 'includes specified workon in wtconf.json' do
-      expect(json['workon']).to eq(workon)
-    end
-
     it 'includes default term in wtconf.json' do
       expect(json['term']).to eq('default')
     end
 
-    it 'includes default company in wtconf.json' do
-      expect(json['company']).to eq('default')
+    it 'includes company as a blank in wtconf.json' do
+      expect(json['company']).to eq('')
     end
   end
 
