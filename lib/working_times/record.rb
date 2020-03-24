@@ -1,5 +1,3 @@
-# frozen_string_literal: false
-
 require 'active_support/time'
 require 'csv'
 

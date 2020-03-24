@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 RSpec.describe 'WorkingTimes::CLI#rest' do
   let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
   let(:last_record) { csv.last }
