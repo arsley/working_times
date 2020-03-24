@@ -37,17 +37,8 @@ module WorkingTimes
     desc 'fi [COMMENT]', 'Short hand for *finish*'
     alias fi finish
 
-    desc 'rest DURATION', 'Record resting time. e.g. \'wt rest 1h30m\''
-    def rest(duration = nil)
-      if duration.nil?
-        puts <<~MSG
-          Please specify duration of resting.
-          e.g. wt rest 1h30m
-          e.g. wt rest '1 hour 30 minutes'
-        MSG
-        return
-      end
-
+    desc 'rest DURATION', 'Record resting time. e.g. \'wt rest 1h30m\'\'wt rest 1 hour 30 minutes\''
+    def rest(duration)
       unless working?
         puts 'You are not starting work. Execute "wt start" to start working.'
         return

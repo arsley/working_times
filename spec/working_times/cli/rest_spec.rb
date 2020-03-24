@@ -12,19 +12,6 @@ RSpec.describe 'WorkingTimes::CLI#rest' do
     end
   end
 
-  context 'when call without duration' do
-    before { WorkingTimes::CLI.new.start }
-
-    it 'shows "specify duration" message' do
-      msg = <<~MSG
-        Please specify duration of resting.
-        e.g. wt rest 1h30m
-        e.g. wt rest '1 hour 30 minutes'
-      MSG
-      expect { WorkingTimes::CLI.new.rest }.to output(msg).to_stdout
-    end
-  end
-
   context 'when call with valid duration' do
     before { WorkingTimes::CLI.new.start }
 
