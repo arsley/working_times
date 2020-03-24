@@ -1,8 +1,20 @@
 require 'thor'
+require 'fileutils'
 
 module WorkingTimes
   class CLI < Thor
     include State
+
+    desc 'init WORKON [TERM] [COMPANY]', 'initialize data directory for your working'
+    def init(workon, term = 'default', company = '')
+      if Dir.exist?(workon)
+        puts "WORKON '#{workon}' is already created. Or name conflicted.'"
+        return
+      end
+
+      FileUtils.mkdir_p(File.join(workon, 'terms'))
+      initialize_wtconf(workon, term, company)
+    end
 
     option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
     desc 'start [COMMENT] <option>', 'Start working with comment.'
@@ -13,7 +25,6 @@ module WorkingTimes
         return
       end
 
-      initialize_data_dir
       initialize_work_log(options[:work_on])
 
       Record.new(timestamp: DateTime.now, comment: comment, work_on: options[:work_on]).start
@@ -45,6 +56,18 @@ module WorkingTimes
       end
 
       Record.new(timestamp: DateTime.now, duration: duration).rest
+    end
+
+    private
+
+    def initialize_wtconf(workon, term, company)
+      data_dir = File.expand_path(workon)
+      File.write(File.join(data_dir, 'wtconf.json'), <<~WTCONF)
+        {
+          "term": "#{term}",
+          "company": "#{company}"
+        }
+      WTCONF
     end
   end
 end

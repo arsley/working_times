@@ -1,3 +1,5 @@
+require 'json'
+
 module WorkingTimes
   module Config
     private
