@@ -45,8 +45,19 @@ module WorkingTimes
     # delete 'working' flag
     # and show 'finished' message
     def finish_work
+      puts "You were working about #{worked_time}."
       File.delete("#{data_dir}/.working")
       puts FINISH_MSG.sample
+    end
+
+    def worked_time
+      last_record = CSV.read("#{data_dir}/#{current_work}").last
+      started_at  = Time.parse(last_record[0])
+      finished_at = Time.parse(last_record[1])
+      duration    = (finished_at - started_at).to_i
+      hour = duration / 3600
+      min  = (duration - 3600 * hour) / 60
+      "#{hour.to_s.rjust(2, '0')} hour #{min.to_s.rjust(2, '0')} min"
     end
   end
 end

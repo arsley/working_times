@@ -5,9 +5,16 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
   let(:last_record) { csv.last }
   after { FileUtils.rm_rf(data_dir) }
 
-  it 'shows "finished" message' do
-    WorkingTimes::CLI.new.start # work start
-    expect { WorkingTimes::CLI.new.finish }.to output(finish_msg_regexp).to_stdout
+  context 'about output message' do
+    it 'shows "finished" message' do
+      WorkingTimes::CLI.new.start # work start
+      expect { WorkingTimes::CLI.new.finish }.to output(finish_msg_regexp).to_stdout
+    end
+
+    it 'shows "finished" message' do
+      WorkingTimes::CLI.new.start # work start
+      expect { WorkingTimes::CLI.new.finish }.to output(worked_time_regexp).to_stdout
+    end
   end
 
   context 'when call without start working' do

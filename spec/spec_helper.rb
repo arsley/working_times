@@ -57,3 +57,7 @@ end
 def finish_msg_regexp
   Regexp.new(WorkingTimes::FINISH_MSG.map { |msg| msg + '|' }.join[0..-2])
 end
+
+def worked_time_regexp
+  /You were working about \d{2} hour \d{2} min./
+end
