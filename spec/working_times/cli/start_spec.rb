@@ -1,5 +1,3 @@
-require 'fileutils'
-
 RSpec.describe 'WorkingTimes::CLI#start' do
   let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
   let(:header) { csv.first }

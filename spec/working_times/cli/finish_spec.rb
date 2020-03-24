@@ -1,5 +1,3 @@
-require 'fileutils'
-
 RSpec.describe 'WorkingTimes::CLI#finish' do
   let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
   let(:last_record) { csv.last }

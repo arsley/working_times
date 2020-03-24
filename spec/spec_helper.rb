@@ -1,5 +1,6 @@
 require 'bundler/setup'
 require 'working_times'
+require 'fileutils'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
@@ -18,6 +19,9 @@ RSpec.configure do |config|
   config.before(:all) do
     $stderr = File.open(File::NULL, 'w')
     $stdout = File.open(File::NULL, 'w')
+
+    # act tmp/ as current directory
+    FileUtils.cd('tmp')
   end
   config.after(:all) do
     $stderr = original_stderr
