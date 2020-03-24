@@ -37,30 +37,29 @@ module WorkingTimes
     end
 
     def rest
-      parse_rest_finished_at
-      File.open("#{data_dir}/#{current_work}", 'a+') do |f|
-        f.puts "#{timestamp.rfc3339},#{@finished_at.rfc3339},#{comment},rest"
-      end
+      parse_rest_sec
 
-      show_rest_msg
+      updated_csv = ''
+      CSV.filter(File.open("#{data_dir}/#{current_work}"), updated_csv, OPTIONS) do |row|
+        next if row.header_row?
+        next unless row['finished_at'].empty?
+
+        row['rest_sec'] = @rest_sec
+      end
+      File.write("#{data_dir}/#{current_work}", updated_csv)
     end
 
     private
 
-    def parse_rest_finished_at
-      @finished_at = timestamp
+    def parse_rest_sec
+      @rest_sec = 0
       if /(?<hour>\d+)\s*h/ =~ duration
-        @finished_at += hour.to_i.hour
+        @rest_sec += hour.to_i * 3600
       end
 
       if /(?<minute>\d+)\s*m/ =~ duration
-        @finished_at += minute.to_i.minute
+        @rest_sec += minute.to_i * 60
       end
-    end
-
-    def show_rest_msg
-      Time::DATE_FORMATS[:rest_finished_at] = '%H:%M:%S'
-      puts "You can rest until #{@finished_at.to_s(:rest_finished_at)}."
     end
   end
 end
