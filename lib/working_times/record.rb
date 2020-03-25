@@ -7,13 +7,12 @@ module WorkingTimes
 
     OPTIONS = { headers: true, return_headers: true, write_headers: true }.freeze
 
-    attr_reader :timestamp, :comment, :duration, :work_on
+    attr_reader :timestamp, :comment, :duration
 
-    def initialize(timestamp:, comment: nil, duration: nil, work_on: nil)
+    def initialize(timestamp:, comment: nil, duration: nil)
       @timestamp = timestamp
       @comment   = comment
       @duration  = duration
-      @work_on   = work_on.nil? ? default_work : work_on
     end
 
     def start

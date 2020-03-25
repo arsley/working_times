@@ -14,7 +14,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
 
     it 'shows "already started" and "how to finish" message' do
       msg = <<~MSG
-        You are already on working at default.
+        You are already on working at #{current_term}.
         To finish this, execute 'wt finish'.
       MSG
       expect { WorkingTimes::CLI.new.start }.to output(msg).to_stdout

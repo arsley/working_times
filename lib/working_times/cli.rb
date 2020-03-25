@@ -26,8 +26,8 @@ module WorkingTimes
 
       initialize_term_log
 
-      Record.new(timestamp: DateTime.now, comment: comment, work_on: options[:work_on]).start
-      start_work(options[:work_on])
+      Record.new(timestamp: DateTime.now, comment: comment).start
+      start_work
     end
 
     desc 'st [COMMENT]', 'Short hand for *start*'
