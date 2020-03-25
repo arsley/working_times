@@ -4,54 +4,28 @@ module WorkingTimes
 
     include Config
 
-    # generate data directory when does not exist
-    # it is usually called by 'start' command
-    def initialize_data_dir
-      return if exist_data_dir?
-
-      puts 'data directory .wt not found, generated.'
-      Dir.mkdir(data_dir)
-    end
-
-    # creates csv with header
-    def initialize_work_log(work_on)
-      work_on = work_on.nil? ? default_work : work_on
-      return if File.exist?("#{data_dir}/#{work_on}")
-
-      File.write("#{data_dir}/#{work_on}", SCHEMA.join(',') + "\n")
-    end
-
-    def exist_data_dir?
-      File.exist?(data_dir)
-    end
-
     def working?
-      File.exist?("#{data_dir}/.working")
+      File.exist?(path_working_flag)
     end
 
     # return what kind of working on
     def current_work
-      File.readlines("#{data_dir}/.working").last.chomp
+      File.readlines(path_working_flag).last.chomp
     end
 
-    # create ~/.wt/.working include what you working on
-    # and show 'started' message
-    def start_work(work_on)
-      work_on = work_on.nil? ? default_work : work_on
-      File.open("#{data_dir}/.working", 'w+') { |f| f.puts work_on }
+    def start_work
+      File.write(path_working_flag, current_term)
       puts START_MSG.sample
     end
 
-    # delete 'working' flag
-    # and show 'finished' message
     def finish_work
       puts "You were working about #{worked_time}."
-      File.delete("#{data_dir}/.working")
+      File.delete(path_working_flag)
       puts FINISH_MSG.sample
     end
 
     def worked_time
-      last_record = CSV.read("#{data_dir}/#{current_work}").last
+      last_record = CSV.read(path_current_term).last
       started_at  = Time.parse(last_record[0])
       finished_at = Time.parse(last_record[1])
       duration    = (finished_at - started_at).to_i

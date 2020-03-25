@@ -1,6 +1,8 @@
 require 'bundler/setup'
 require 'working_times'
 
+TMP_DIR = File.expand_path('tmp').freeze
+
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
   config.example_status_persistence_file_path = '.rspec_status'
@@ -12,40 +14,29 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
-  # disable STDERR, STDOUT during examples run
-  original_stderr = $stderr
-  original_stdout = $stdout
   config.before(:all) do
-    $stderr = File.open(File::NULL, 'w')
-    $stdout = File.open(File::NULL, 'w')
-  end
-  config.after(:all) do
-    $stderr = original_stderr
-    $stdout = original_stdout
+    # act tmp/ as current directory
+    FileUtils.cd(TMP_DIR)
   end
 end
 
-# mock config
-# do not remove ACTUAL configurations
-module WorkingTimes::Config
-  private
+# to enable helper about paths
+include WorkingTimes::Config
 
-  def data_dir
-    File.expand_path('tmp/.wt')
+RSpec.shared_context 'CLI#init with cleaning' do
+  let(:workon) { 'test_workon' }
+  let(:term) { 'test_term_1st' }
+  let(:company) { 'test_company' }
+
+  before do
+    WorkingTimes::CLI.new.init(workon, term, company)
+    FileUtils.cd(workon)
   end
 
-  def default_work
-    'default'
+  after do
+    FileUtils.cd('../')
+    FileUtils.rm_rf(workon)
   end
-end
-
-# directory helper for spec
-def data_dir
-  File.expand_path('tmp/.wt')
-end
-
-def default_work
-  'default'
 end
 
 # regexp helper for asserting cli output on 'wt start'

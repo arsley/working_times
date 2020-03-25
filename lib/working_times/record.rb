@@ -7,44 +7,43 @@ module WorkingTimes
 
     OPTIONS = { headers: true, return_headers: true, write_headers: true }.freeze
 
-    attr_reader :timestamp, :comment, :duration, :work_on
+    attr_reader :timestamp, :comment, :duration
 
-    def initialize(timestamp:, comment: nil, duration: nil, work_on: nil)
+    def initialize(timestamp:, comment: nil, duration: nil)
       @timestamp = timestamp
       @comment   = comment
       @duration  = duration
-      @work_on   = work_on.nil? ? default_work : work_on
     end
 
     def start
-      CSV.open("#{data_dir}/#{work_on}", 'a+', OPTIONS) do |csv|
+      CSV.open(path_current_term, 'a+', OPTIONS) do |csv|
         csv.puts([timestamp.rfc3339, '', 0, comment])
       end
     end
 
     def finish
       updated_csv = ''
-      CSV.filter(File.open("#{data_dir}/#{current_work}"), updated_csv, OPTIONS) do |row|
+      CSV.filter(File.open(path_current_term), updated_csv, OPTIONS) do |row|
         next if row.header_row?
         next unless row['finished_at'].empty?
 
         row['finished_at'] = timestamp.rfc3339
         row['comment'] = comment
       end
-      File.write("#{data_dir}/#{current_work}", updated_csv)
+      File.write(path_current_term, updated_csv)
     end
 
     def rest
       parse_rest_sec
 
       updated_csv = ''
-      CSV.filter(File.open("#{data_dir}/#{current_work}"), updated_csv, OPTIONS) do |row|
+      CSV.filter(File.open(path_current_term), updated_csv, OPTIONS) do |row|
         next if row.header_row?
         next unless row['finished_at'].empty?
 
         row['rest_sec'] = @rest_sec
       end
-      File.write("#{data_dir}/#{current_work}", updated_csv)
+      File.write(path_current_term, updated_csv)
     end
 
     private

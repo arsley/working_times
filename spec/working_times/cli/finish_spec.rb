@@ -1,18 +1,17 @@
-require 'fileutils'
-
 RSpec.describe 'WorkingTimes::CLI#finish' do
-  let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
+  include_context 'CLI#init with cleaning'
+
+  let(:csv) { CSV.readlines(path_current_term) }
   let(:last_record) { csv.last }
-  after { FileUtils.rm_rf(data_dir) }
 
   context 'about output message' do
+    before { WorkingTimes::CLI.new.start }
+
     it 'shows "finished" message' do
-      WorkingTimes::CLI.new.start # work start
       expect { WorkingTimes::CLI.new.finish }.to output(finish_msg_regexp).to_stdout
     end
 
     it 'shows "finished" message' do
-      WorkingTimes::CLI.new.start # work start
       expect { WorkingTimes::CLI.new.finish }.to output(worked_time_regexp).to_stdout
     end
   end
@@ -39,7 +38,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
     end
 
     it 'deletes data_dir/.working' do
-      expect(File.exist?("#{data_dir}/.working")).to be_falsey
+      expect(File.exist?(path_working_flag)).to be_falsey
     end
   end
 
@@ -58,7 +57,7 @@ RSpec.describe 'WorkingTimes::CLI#finish' do
     end
 
     it 'deletes data_dir/.working' do
-      expect(File.exist?("#{data_dir}/.working")).to be_falsey
+      expect(File.exist?(path_working_flag)).to be_falsey
     end
   end
 end
