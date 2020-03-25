@@ -18,29 +18,6 @@ RSpec.configure do |config|
   end
 end
 
-# mock config
-# do not remove ACTUAL configurations
-module WorkingTimes::Config
-  private
-
-  def data_dir
-    File.expand_path('tmp/.wt')
-  end
-
-  def default_work
-    'default'
-  end
-end
-
-# directory helper for spec
-def data_dir
-  File.expand_path('tmp/.wt')
-end
-
-def default_work
-  'default'
-end
-
 # regexp helper for asserting cli output on 'wt start'
 def start_msg_regexp
   Regexp.new(WorkingTimes::START_MSG.map { |msg| msg + '|' }.join[0..-2])
