@@ -18,6 +18,9 @@ RSpec.configure do |config|
   end
 end
 
+# to enable helper about paths
+include WorkingTimes::Config
+
 # regexp helper for asserting cli output on 'wt start'
 def start_msg_regexp
   Regexp.new(WorkingTimes::START_MSG.map { |msg| msg + '|' }.join[0..-2])
