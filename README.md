@@ -7,11 +7,10 @@
 
 Store your working(worked) time simply.
 It's just record woking timestamp on specific file.
-By default, use `~/.wtconf` as a configuration, `~/.wt` as a data directory and `~/.wt/default` as a file to record.
 Default record format is:
 
 ```
-STARTED_AT,FINISHED_AT,REST_SEC,COMMEN
+STARTED_AT,FINISHED_AT,REST_SEC,COMMENT
 ```
 
 ## Feature
@@ -34,12 +33,33 @@ $ gem install working_times
 $ wt
 
 Commands:
-  wt fi [COMMENT]              # Short hand for *finish*
-  wt finish [COMMENT]          # Finish working on current group.
-  wt help [COMMAND]            # Describe available commands or one specific command
-  wt rest DURATION             # Record resting time. e.g. 'wt rest 1h30m'
-  wt st [COMMENT] <option>     # Short hand for *start*
-  wt start [COMMENT] <option>  # Start working with comment.
+  wt fi [COMMENT]                  # Short hand for *finish*
+  wt finish [COMMENT]              # Finish working on current group.
+  wt help [COMMAND]                # Describe available commands or one specific command
+  wt init WORKON [TERM] [COMPANY]  # initialize data directory for your working
+  wt rest DURATION                 # Record resting time. e.g. 'wt rest 1h30m''wt rest 1 hour 30 minutes'
+  wt st [COMMENT]                  # Short hand for *start*
+  wt start [COMMENT]               # Start working with comment.
+```
+
+Before start work, you have to initialize directory which stores *working times*.
+
+```
+$ wt init company_worktime
+```
+
+It creates directories like:
+
+```
+company_worktime
+├── terms/
+└── wtconf.json
+```
+
+You can also set 'term' (default is 'default') and 'company' (default is '') name (both is optional).
+
+```
+$ wt init company_worktime week1 'Arsley co.,ltd'
 ```
 
 Start working with `wt start`.
@@ -52,14 +72,6 @@ You can set comment with it.
 
 ```
 $ wt start "Today, I will implement some great feature!"
-```
-
-And also, you can specify group depends on your work type.
-If you not specify group, WorkingTimes uses `DEFAULTWORK` on configuration.
-
-```
-$ wt start --work-on=remote1
-$ wt start -w daily
 ```
 
 A: How long do you want to take a rest? <br>
@@ -99,15 +111,17 @@ $ wt fi # same as 'wt finish'
 
 ### Config file
 
-WorkingTimes loads configuration file at `~/.wtconf`.
-Currently, you can set 2 values: `DATADIR` and `DEFAULTWORK`.
+WorkingTimes loads configuration file at `current_directory/wtconf.json`.
+Currently, you can set 2 values: `term` and `company`. (You also set on `wt init`)
 Here is a default configurations below.
 
 ```
-# ~/.wtconf
+# wtconf.json
 
-DATADIR=/your/home/.wt
-DEFAULTWORK=default
+{
+  "term": "week1",
+  "company": "Arsley co.,ltd"
+}
 ```
 
 ## Development
@@ -128,7 +142,6 @@ Check behavior without installation.
 
 ```
 $ bundle exec exe/wt
-#=> generates .wtconf and .wt/ under tmp/
 ```
 
 ## Contributing
