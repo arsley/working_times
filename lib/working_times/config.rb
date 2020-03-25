@@ -33,7 +33,7 @@ module WorkingTimes
     end
 
     def wtconf
-      JSON.parse(path_wtconf)
+      JSON.parse(File.read(path_wtconf))
     end
   end
 end
