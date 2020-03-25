@@ -1,8 +1,9 @@
 RSpec.describe 'WorkingTimes::CLI#start' do
-  let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
+  include_context 'CLI#init with cleaning'
+
+  let(:csv) { CSV.readlines(path_current_term) }
   let(:header) { csv.first }
   let(:last_record) { csv.last }
-  after { FileUtils.rm_rf(data_dir) }
 
   it 'shows "started" message' do
     expect { WorkingTimes::CLI.new.start }.to output(start_msg_regexp).to_stdout
@@ -23,16 +24,12 @@ RSpec.describe 'WorkingTimes::CLI#start' do
   context 'when call first time' do
     before { WorkingTimes::CLI.new.start }
 
-    it 'creates directory to store WorkingTimes\' data at data_dir' do
-      expect(File.exist?(data_dir)).to be_truthy
-    end
-
-    it 'creates data_dir/default_work to store working time record' do
-      expect(File.exist?("#{data_dir}/#{default_work}")).to be_truthy
+    it 'creates data_dir/terms/your_term to store working time record' do
+      expect(File.exist?(path_current_term)).to be_truthy
     end
 
     it 'creates data_dir/.working to indicate "On working".' do
-      expect(File.exist?("#{data_dir}/.working")).to be_truthy
+      expect(File.exist?(path_working_flag)).to be_truthy
     end
 
     it 'includes header like \'started_at,finished_at,rest_sec,comment\' on data_dir/default_work' do
@@ -55,7 +52,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
     end
 
     it 'creates data_dir/.working to indicate "On working".' do
-      expect(File.exist?("#{data_dir}/.working")).to be_truthy
+      expect(File.exist?(path_working_flag)).to be_truthy
     end
   end
 
@@ -71,7 +68,7 @@ RSpec.describe 'WorkingTimes::CLI#start' do
     end
 
     it 'creates data_dir/.working to indicate "On working".' do
-      expect(File.exist?("#{data_dir}/.working")).to be_truthy
+      expect(File.exist?(path_working_flag)).to be_truthy
     end
   end
 end
