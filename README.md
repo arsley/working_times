@@ -3,7 +3,7 @@
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/arsley/working_times?style=flat-square)
 [![Gem](https://img.shields.io/gem/v/working_times?style=flat-square)](https://rubygems.org/gems/working_times)
 ![GitHub](https://img.shields.io/github/license/arsley/working_times?style=flat-square)
-![Travis (.com) branch](https://img.shields.io/travis/com/arsley/working_times/master?style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/arsley/working_times/Ruby?label=Ruby&style=flat-square)
 
 Store your working(worked) time simply.
 It's just record woking timestamp on specific file.
