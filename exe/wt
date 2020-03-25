@@ -2,18 +2,4 @@
 
 require 'working_times'
 
-# mock config
-# do not remove ACTUAL configurations
-module WorkingTimes::Config
-  private
-
-  def data_dir
-    File.expand_path('tmp/.wt')
-  end
-
-  def default_work
-    'default'
-  end
-end
-
 WorkingTimes::CLI.start
