@@ -8,6 +8,10 @@ module WorkingTimes
       File.expand_path('.')
     end
 
+    def path_wtconf
+      File.join(data_dir, 'wtconf.json')
+    end
+
     def term_dir
       File.join(data_dir, 'terms')
     end
@@ -29,7 +33,7 @@ module WorkingTimes
     end
 
     def wtconf
-      JSON.parse(File.expand_path('wtconf.json'))
+      JSON.parse(path_wtconf)
     end
   end
 end

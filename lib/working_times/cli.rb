@@ -16,8 +16,7 @@ module WorkingTimes
       initialize_wtconf(workon, term, company)
     end
 
-    option :work_on, aliases: ['-w'], desc: 'Specify what group of work on'
-    desc 'start [COMMENT] <option>', 'Start working with comment.'
+    desc 'start [COMMENT] ', 'Start working with comment.'
     def start(comment = '')
       if working?
         puts "You are already on working at #{current_work}."
@@ -25,13 +24,13 @@ module WorkingTimes
         return
       end
 
-      initialize_work_log(options[:work_on])
+      initialize_term_log
 
       Record.new(timestamp: DateTime.now, comment: comment, work_on: options[:work_on]).start
       start_work(options[:work_on])
     end
 
-    desc 'st [COMMENT] <option>', 'Short hand for *start*'
+    desc 'st [COMMENT]', 'Short hand for *start*'
     alias st start
 
     desc 'finish [COMMENT]', 'Finish working on current group.'
@@ -61,6 +60,7 @@ module WorkingTimes
     private
 
     def initialize_wtconf(workon, term, company)
+      # on initializing, we shouldn't use path helper e.g. Config#data_dir
       data_dir = File.expand_path(workon)
       File.write(File.join(data_dir, 'wtconf.json'), <<~WTCONF)
         {
@@ -68,6 +68,12 @@ module WorkingTimes
           "company": "#{company}"
         }
       WTCONF
+    end
+
+    def initialize_term_log
+      return if File.exist?(path_current_term)
+
+      File.write(path_current_term, SCHEMA.join(',') + "\n")
     end
   end
 end
