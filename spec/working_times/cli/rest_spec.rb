@@ -1,9 +1,10 @@
 RSpec.describe 'WorkingTimes::CLI#rest' do
-  let(:csv) { CSV.readlines("#{data_dir}/#{default_work}") }
+  include_context 'CLI#init with cleaning'
+
+  let(:csv) { CSV.readlines(path_current_term) }
   let(:last_record) { csv.last }
   let(:rest_hour_with_half) { '1h 30m' }
   let(:sec_hour_with_half) { '5400' }
-  after { FileUtils.rm_rf(data_dir) }
 
   context 'when call without start working' do
     it 'shows "not started" message' do
