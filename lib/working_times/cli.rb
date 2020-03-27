@@ -57,6 +57,11 @@ module WorkingTimes
       Record.new(timestamp: DateTime.now, duration: duration).rest
     end
 
+    desc 'version', 'Show version of working_times'
+    def version
+      puts 'version: ' + VERSION
+    end
+
     private
 
     def initialize_wtconf(workon, term, company)
