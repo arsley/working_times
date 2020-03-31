@@ -141,7 +141,7 @@ $ bundle exec rake
 Check behavior without installation.
 
 ```
-$ bundle exec wt
+$ bundle exec exe/wt
 ```
 
 ## Contributing
