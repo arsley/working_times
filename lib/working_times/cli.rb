@@ -13,6 +13,7 @@ module WorkingTimes
       end
 
       FileUtils.mkdir_p(File.join(workon, 'terms'))
+      FileUtils.mkdir_p(File.join(workon, 'invoices'))
       initialize_wtconf(workon, term, company)
     end
 

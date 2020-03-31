@@ -27,6 +27,10 @@ RSpec.describe 'WorkingTimes::CLI#init' do
       expect(Dir.exist?(term_dir)).to be_truthy
     end
 
+    it 'creates invoices/' do
+      expect(File.exist?(invoice_dir)).to be_truthy
+    end
+
     it 'includes default term in wtconf.json' do
       expect(wtconf['term']).to eq('default')
     end

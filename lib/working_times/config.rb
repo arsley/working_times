@@ -32,6 +32,14 @@ module WorkingTimes
       wtconf['company']
     end
 
+    def invoice_dir
+      File.join(data_dir, 'invoices')
+    end
+
+    def invoice_info
+      wtconf['invoice']
+    end
+
     def wtconf
       JSON.parse(File.read(path_wtconf))
     end
