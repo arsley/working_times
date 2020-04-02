@@ -4,7 +4,6 @@ RSpec.describe 'WorkingTimes::CLI#init' do
   let(:company) { 'test_company' }
 
   after do
-    FileUtils.cd('../')
     FileUtils.rm_rf(workon)
   end
 
