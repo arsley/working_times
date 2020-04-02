@@ -71,7 +71,12 @@ module WorkingTimes
       File.write(File.join(data_dir, 'wtconf.json'), <<~WTCONF)
         {
           "term": "#{term}",
-          "company": "#{company}"
+          "invoice": {
+            "company": "#{company}",
+            "template": "",
+            "salaryPerHour": 0,
+            "taxRate": 0.0
+          }
         }
       WTCONF
     end

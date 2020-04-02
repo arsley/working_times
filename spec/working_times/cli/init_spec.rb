@@ -35,8 +35,20 @@ RSpec.describe 'WorkingTimes::CLI#init' do
       expect(wtconf['term']).to eq('default')
     end
 
-    it 'includes company as a blank in wtconf.json' do
-      expect(wtconf['company']).to eq('')
+    it 'includes invoice.company as a blank in wtconf.json' do
+      expect(wtconf['invoice']['company']).to eq('')
+    end
+
+    it 'includes invoice.template as a blank in wtconf.json' do
+      expect(wtconf['invoice']['template']).to eq('')
+    end
+
+    it 'includes invoice.salaryPerHour as 0 in wtconf.json' do
+      expect(wtconf['invoice']['salaryPerHour']).to eq(0)
+    end
+
+    it 'includes invoice.taxRate as 0.0 in wtconf.json' do
+      expect(wtconf['invoice']['taxRate']).to eq(0.0)
     end
   end
 
@@ -57,8 +69,8 @@ RSpec.describe 'WorkingTimes::CLI#init' do
       FileUtils.cd(workon)
     end
 
-    it 'includes specified company in wtconf.json' do
-      expect(wtconf['company']).to eq(company)
+    it 'includes specified invoice.company in wtconf.json' do
+      expect(wtconf['invoice']['company']).to eq(company)
     end
   end
 end
