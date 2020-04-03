@@ -58,6 +58,15 @@ module WorkingTimes
       Record.new(timestamp: DateTime.now, duration: duration).rest
     end
 
+    option :build, type: :boolean, aliases: ['-b']
+    desc 'invoice', 'Create invoice for current term by TeX template. It will build pdf if option is set'
+    def invoice
+      Invoice.new.tap do |invoice|
+        invoice.generate
+        invoice.build if options[:build]
+      end
+    end
+
     desc 'version', 'Show version of working_times'
     def version
       puts 'version: ' + VERSION
