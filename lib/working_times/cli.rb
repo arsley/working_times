@@ -13,6 +13,7 @@ module WorkingTimes
       end
 
       FileUtils.mkdir_p(File.join(workon, 'terms'))
+      FileUtils.mkdir_p(File.join(workon, 'invoices'))
       initialize_wtconf(workon, term, company)
     end
 
@@ -57,6 +58,21 @@ module WorkingTimes
       Record.new(timestamp: DateTime.now, duration: duration).rest
     end
 
+    option :build, type: :boolean, aliases: ['-b']
+    desc 'invoice', 'Create invoice for current term by TeX template. It will build pdf if option is set'
+    def invoice
+      Invoice.new.tap do |invoice|
+        invoice.generate
+        invoice.build if options[:build]
+      end
+      puts "Invoice created to #{path_invoice_current_term}."
+    end
+
+    desc 'version', 'Show version of working_times'
+    def version
+      puts 'version: ' + VERSION
+    end
+
     private
 
     def initialize_wtconf(workon, term, company)
@@ -65,7 +81,12 @@ module WorkingTimes
       File.write(File.join(data_dir, 'wtconf.json'), <<~WTCONF)
         {
           "term": "#{term}",
-          "company": "#{company}"
+          "invoice": {
+            "company": "#{company}",
+            "template": "",
+            "salaryPerHour": 0,
+            "taxRate": 0.0
+          }
         }
       WTCONF
     end
