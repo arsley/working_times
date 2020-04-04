@@ -14,9 +14,23 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 
+  # disable STDERR, STDOUT during examples run when pry is not loaded
+  original_stderr = $stderr
+  original_stdout = $stdout
+
   config.before(:all) do
     # act tmp/ as current directory
     FileUtils.cd(TMP_DIR)
+
+    unless respond_to? :pry
+      $stderr = File.open(File::NULL, 'w')
+      $stdout = File.open(File::NULL, 'w')
+    end
+  end
+
+  config.after(:all) do
+    $stderr = original_stderr
+    $stdout = original_stdout
   end
 end
 
