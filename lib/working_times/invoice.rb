@@ -85,16 +85,6 @@ module WorkingTimes
       end
     end
 
-    # invoice_dir/current_term
-    def dir_invoice_current_term
-      @dir_invoice_current_term ||= File.join(invoice_dir, current_term)
-    end
-
-    # invoice_dir/current_term/current_term.tex
-    def path_invoice_current_term
-      @path_invoice_current_term ||= File.join(dir_invoice_current_term, "#{current_term}.tex")
-    end
-
     def beginning_of_month(rfc3339)
       Date.parse(rfc3339).beginning_of_month
     end

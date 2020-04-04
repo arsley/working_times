@@ -40,6 +40,14 @@ module WorkingTimes
       wtconf['invoice']
     end
 
+    def dir_invoice_current_term
+      File.join(invoice_dir, current_term)
+    end
+
+    def path_invoice_current_term
+      File.join(dir_invoice_current_term, "#{current_term}.tex")
+    end
+
     def wtconf
       JSON.parse(File.read(path_wtconf))
     end
