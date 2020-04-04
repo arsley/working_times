@@ -3,19 +3,19 @@ RSpec.describe 'WorkingTimes::CLI#init' do
   let(:term) { 'test_term_1st' }
   let(:company) { 'test_company' }
 
-  after do
-    FileUtils.rm_rf(workon)
-  end
-
   context 'when call with workon' do
     before do
       WorkingTimes::CLI.new.init(workon)
       FileUtils.cd(workon)
     end
 
-    it 'creates directory' do
+    after do
       FileUtils.cd('../')
-      expect(Dir.exist?(workon)).to be_truthy
+      FileUtils.rm_rf(workon)
+    end
+
+    it 'creates directory' do
+      expect(Dir.exist?('../' + workon)).to be_truthy
     end
 
     it 'creates wtconf.json' do
@@ -57,6 +57,11 @@ RSpec.describe 'WorkingTimes::CLI#init' do
       FileUtils.cd(workon)
     end
 
+    after do
+      FileUtils.cd('../')
+      FileUtils.rm_rf(workon)
+    end
+
     it 'includes specified term in wtconf.json' do
       expect(wtconf['term']).to eq(term)
     end
@@ -66,6 +71,11 @@ RSpec.describe 'WorkingTimes::CLI#init' do
     before do
       WorkingTimes::CLI.new.init(workon, term, company)
       FileUtils.cd(workon)
+    end
+
+    after do
+      FileUtils.cd('../')
+      FileUtils.rm_rf(workon)
     end
 
     it 'includes specified invoice.company in wtconf.json' do
