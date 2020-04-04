@@ -65,6 +65,7 @@ module WorkingTimes
         invoice.generate
         invoice.build if options[:build]
       end
+      puts "Invoice created to #{path_invoice_current_term}."
     end
 
     desc 'version', 'Show version of working_times'

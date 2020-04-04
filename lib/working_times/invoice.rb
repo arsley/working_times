@@ -30,7 +30,8 @@ module WorkingTimes
     end
 
     def build
-      # code
+      puts 'Currently, it is not available to build pdf with latexmk.'
+      puts 'Wait for new version!'
     end
 
     private
