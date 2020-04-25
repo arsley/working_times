@@ -111,10 +111,12 @@ module WorkingTimes
       "#{worktime.nil? ? '-' : parse_second_to_hm_str(worktime)} \\\\ \\hline"
     end
 
+    # second : Float
     def parse_second_to_hm_str(second)
-      h = (second / 3600).to_i
-      m = second - (3600 * h)
-      "#{h.to_i}:#{m.to_i.to_s.rjust(2, '0')}"
+      second = second.to_i
+      h = second / 3600
+      m = (second - 3600 * h) / 60
+      "#{h}:#{m.to_s.rjust(2, '0')}"
     end
 
     def parse_second_to_hh_str(second)
